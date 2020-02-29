@@ -8,22 +8,21 @@ import ShopcarContainer from './components/tabbar/ShopcarContainer.vue'
 
 var router = new VueRouter({ // 3.创建路由对象
     routes: [{
-            path: '/home',
-            component: HomeContainer
-        },
-        {
-            path: '/member',
-            component: MemberContainer
-        },
-        {
-            path: '/search',
-            component: SearchContainer
-        },
-        {
-            path: '/shopcar',
-            component: ShopcarContainer
-        },
-    ],
+        path: '/',
+        redirect: '/home'
+    }, {
+        path: '/home',
+        component: HomeContainer
+    }, {
+        path: '/member',
+        component: MemberContainer
+    }, {
+        path: '/search',
+        component: SearchContainer
+    }, {
+        path: '/shopcar',
+        component: ShopcarContainer
+    }, ],
     linkActiveClass: 'mui-active' // 覆盖默认路由高亮，默认类router-link-active
 })
 

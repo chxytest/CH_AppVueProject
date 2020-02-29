@@ -4,7 +4,9 @@
     <mt-header fixed title="黑马程序员Vue项目"></mt-header>
 
     <!-- 中间 路由 router-view 显示区域 -->
-    <router-view></router-view>
+    <transition>
+      <router-view></router-view>
+    </transition>
 
     <!-- 底部 Tabber 切换栏 -->
     <nav class="mui-bar mui-bar-tab">
@@ -36,5 +38,21 @@
 <style lang="less" scoped>
 .app-container {
   padding-top: 40px;
+  overflow: hidden;
+}
+
+.v-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+.v-leave-to {
+  opacity: 0;
+  transform: translateX(-100%);
+  position: absolute;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.5s ease;
 }
 </style>
