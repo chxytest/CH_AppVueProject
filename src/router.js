@@ -5,6 +5,7 @@ import HomeContainer from './components/tabbar/HomeContainer.vue'
 import MemberContainer from './components/tabbar/MemberContainer.vue'
 import SearchContainer from './components/tabbar/SearchContainer.vue'
 import ShopcarContainer from './components/tabbar/ShopcarContainer.vue'
+import NewsList from './components/news/NewsList.vue'
 
 var router = new VueRouter({ // 3.创建路由对象
     routes: [{
@@ -22,7 +23,10 @@ var router = new VueRouter({ // 3.创建路由对象
     }, {
         path: '/shopcar',
         component: ShopcarContainer
-    }, ],
+    }, {
+        path: '/home/newslist',
+        component: NewsList
+    }],
     linkActiveClass: 'mui-active' // 覆盖默认路由高亮，默认类router-link-active
 })
 

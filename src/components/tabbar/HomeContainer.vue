@@ -10,10 +10,10 @@
     <!-- 九宫格部分 -->
     <ul class="mui-table-view mui-grid-view mui-grid-9">
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-        <a href="#">
+        <router-link to="/home/newslist">
           <img src="../../images/menu1.png" alt />
           <div class="mui-media-body">新闻咨询</div>
-        </a>
+        </router-link>
       </li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
         <a href="#">
@@ -65,19 +65,17 @@ export default {
   methods: {
     getLunbotu() {
       // 获取轮播图数据
-      this.$http
-        .get("http://www.liulongbin.top:3005/api/getnewslist")
-        .then(result => {
-          //   console.log(result.body);
-          if (result.body.status === 0) {
-            // 成功
-            this.lunbotuList = result.body.message;
-            Toast("轮播图加载成功");
-          } else {
-            // 失败
-            Toast("轮播图加载失败");
-          }
-        });
+      this.$http.get("api/getnewslist").then(result => {
+        //   console.log(result.body);
+        if (result.body.status === 0) {
+          // 成功
+          this.lunbotuList = result.body.message;
+          Toast("轮播图加载成功");
+        } else {
+          // 失败
+          Toast("轮播图加载失败");
+        }
+      });
     }
   }
 };
