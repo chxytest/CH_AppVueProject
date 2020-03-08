@@ -27,11 +27,13 @@ import './lib/mui/css/icons-extra.css'
 import {
     Header,
     Swipe,
-    SwipeItem
+    SwipeItem,
+    Button
 } from 'mint-ui';
 Vue.component(Header.name, Header);
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
+Vue.component(Button.name, Button);
 import 'mint-ui/lib/style.css';
 
 // 导入自己的路由模块
