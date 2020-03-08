@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 // 导入获取时间插件
 import moment from 'moment'
 // 定义全局过滤器，格式化时间
-Vue.filter('dataFormat', function (dataStr, pattern = "YYYY-MM-DD HH:mm:ss") {
+Vue.filter('dateFormat', function (dataStr, pattern = "YYYY-MM-DD HH:mm:ss") {
     return moment(dataStr).format(pattern);
 })
 

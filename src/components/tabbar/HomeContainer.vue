@@ -2,8 +2,8 @@
   <div>
     <!-- 顶部轮播区 -->
     <mt-swipe :auto="4000">
-      <mt-swipe-item v-for="item in lunbotuList" :key="item.img_url">
-        <img :src="item.img_url" alt />
+      <mt-swipe-item v-for="item in lunbotuList" :key="item.url">
+        <img :src="item.img" alt />
       </mt-swipe-item>
     </mt-swipe>
 
@@ -65,7 +65,7 @@ export default {
   methods: {
     getLunbotu() {
       // 获取轮播图数据
-      this.$http.get("api/getnewslist").then(result => {
+      this.$http.get("api/getlunbo").then(result => {
         //   console.log(result.body);
         if (result.body.status === 0) {
           // 成功
