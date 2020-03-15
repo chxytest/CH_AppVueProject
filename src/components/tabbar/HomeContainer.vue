@@ -2,7 +2,7 @@
   <div>
     <!-- 顶部轮播区 -->
     <mt-swipe :auto="4000">
-      <mt-swipe-item v-for="(item,index) in lunbotuList" :key="index">
+      <mt-swipe-item v-for="(item, index) in lunbotuList" :key="index">
         <img :src="item.img" alt />
       </mt-swipe-item>
     </mt-swipe>
