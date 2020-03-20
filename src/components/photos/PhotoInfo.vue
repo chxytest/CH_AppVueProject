@@ -8,6 +8,16 @@
 
     <hr />
     <!-- 缩略图区域 -->
+    <div class="thumbs">
+      <img
+        class="preview-img"
+        v-for="(item, index) in list"
+        :src="item.src"
+        height="100"
+        @click="$preview.open(index, list)"
+        :key="item.src"
+      />
+    </div>
 
     <!-- 图片内容区域 -->
     <div class="content" v-html="photoinfo.content"></div>
@@ -24,17 +34,33 @@ export default {
   data() {
     return {
       id: this.$route.params.id,
-      photoinfo: {}
+      photoinfo: {},
+      list: []
     };
   },
   created() {
     this.getPhotoInfo();
+    this.getThumbs();
   },
   methods: {
     getPhotoInfo() {
       this.$http.get("api/getimageInfo/" + this.id).then(result => {
         if (result.body.status === 0) {
           this.photoinfo = result.body.message[0];
+        }
+      });
+    },
+    getThumbs() {
+      //获取缩略图
+      this.$http.get("api/getthumimages/" + this.id).then(result => {
+        if (result.body.status === 0) {
+          // 循环每一个图片，补全每一个图片的宽和高
+          result.body.message.forEach(item => {
+            item.w = 600;
+            item.h = 400;
+          });
+          // 把完整的数据保存到 list 中
+          this.list = result.body.message;
         }
       });
     }
@@ -62,6 +88,12 @@ export default {
   .content {
     font-size: 13px;
     line-height: 30px;
+  }
+  .thumbs {
+    img {
+      margin: 10px;
+      box-shadow: 0 0 8px #999;
+    }
   }
 }
 </style>
