@@ -1,52 +1,87 @@
 <template>
   <div class="goods-list">
-    <div class="goods-item">
-      <img src alt />
-      <h3 class="title">小米（Mi）小米Note 16G双网通版</h3>
+    <!-- 列表数据部分 -->
+    <!-- <router-link
+      class="goods-item"
+      v-for="item in goodslist"
+      :key="item.id"
+      :to="'/home/goodsinfo/' + item.id"
+      tag="div"
+    >
+      <img :src="item.img_url" alt />
+      <h3 class="title">{{ item.title }}</h3>
       <div class="info">
         <p class="price">
-          <span class="now">￥899</span>
-          <span class="old">￥999</span>
+          <span class="now">￥{{ item.sell_price }}</span>
+          <span class="old">￥{{ item.market_price }}</span>
         </p>
         <p class="sell">
           <span>热卖中</span>
-          <span>剩余60件</span>
+          <span>剩余 {{ item.stock_quantity }} 件</span>
         </p>
       </div>
-    </div>
-    <div class="goods-item">
-      <img src alt />
-      <h3 class="title">小米（Mi）小米Note 16G双网通版</h3>
+    </router-link>-->
+
+    <!-- 使用 js 方法进行路由跳转 -->
+    <div class="goods-item" v-for="item in goodslist" :key="item.id" @click="goDetail(item.id)">
+      <img :src="item.img_url" alt />
+      <h3 class="title">{{ item.title }}</h3>
       <div class="info">
         <p class="price">
-          <span class="now">￥899</span>
-          <span class="old">￥999</span>
+          <span class="now">￥{{ item.sell_price }}</span>
+          <span class="old">￥{{ item.market_price }}</span>
         </p>
         <p class="sell">
           <span>热卖中</span>
-          <span>剩余60件</span>
+          <span>剩余 {{ item.stock_quantity }} 件</span>
         </p>
       </div>
     </div>
-    <div class="goods-item">
-      <img src alt />
-      <h3 class="title">小米（Mi）小米Note 16G双网通版</h3>
-      <div class="info">
-        <p class="price">
-          <span class="now">￥899</span>
-          <span class="old">￥999</span>
-        </p>
-        <p class="sell">
-          <span>热卖中</span>
-          <span>剩余60件</span>
-        </p>
-      </div>
-    </div>
+
+    <!-- 加载更多按钮 -->
+    <mt-button type="danger" size="large" @click="getMore">加载更多</mt-button>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      pageindex: 1, // 默认分页的页数
+      goodslist: [] // 存放商品列表的数组
+    };
+  },
+  created() {
+    this.getGoodsList();
+  },
+  methods: {
+    // 获取商品列表
+    getGoodsList() {
+      this.$http
+        .get("api/getgoods?pageindex=" + this.pageindex)
+        .then(result => {
+          if (result.body.status === 0) {
+            this.goodslist = this.goodslist.concat(result.body.message);
+          }
+        });
+    },
+
+    getMore() {
+      this.pageindex++;
+      this.getGoodsList();
+    },
+
+    // 跳转商品详情页面方法
+    goDetail(id) {
+      // 1.方法一
+      // this.$router.push("/home/goodsinfo/" + id);
+      // 2.方法二
+      // this.$router.push({ path: "/home/goodsinfo/" + id });
+      // 3.方法三
+      this.$router.push({ name: "goodsinfo", params: { id } });
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>
