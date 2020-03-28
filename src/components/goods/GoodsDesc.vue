@@ -1,12 +1,51 @@
 <template>
-  <div>
-    <h3>商品图文</h3>
+  <div class="goodsdesc-container">
+    <h3>{{ descinfo.title }}</h3>
+
+    <hr />
+
+    <div class="content" v-html="descinfo.content"></div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      descinfo: {} // 图文信息
+    };
+  },
+  created() {
+    this.getGoodsDesc();
+  },
+  methods: {
+    getGoodsDesc() {
+      this.$http
+        .get("api/goods/getdesc/" + this.$route.params.id)
+        .then(result => {
+          if (result.body.status === 0) {
+            this.descinfo = result.body.message[0];
+          }
+        });
+    }
+  }
+};
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
+.goodsdesc-container {
+  padding: 4px;
+  h3 {
+    font-size: 16px;
+    color: #226aff;
+    text-align: center;
+    margin: 15px 0;
+  }
+
+  .content {
+    img {
+      width: 100%;
+    }
+  }
+}
 </style>

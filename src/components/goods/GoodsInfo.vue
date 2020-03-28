@@ -1,5 +1,9 @@
 <template>
   <div class="goodsinfo-container">
+    <transition @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+      <div class="ball" v-show="ballFlag" ref="ball"></div>
+    </transition>
+
     <!-- 商品图片轮播区 -->
     <div class="mui-card">
       <div class="mui-card-content">
@@ -8,6 +12,7 @@
         </div>
       </div>
     </div>
+
     <!-- 商品购买区域 -->
     <div class="mui-card">
       <div class="mui-card-header">{{ goodsinfo.title }}</div>
@@ -20,15 +25,16 @@
           </p>
           <p>
             购买数量
-            <numbox></numbox>
+            <numbox @getcount="getSelectedCount" :max="goodsinfo.stock_quantity"></numbox>
           </p>
           <p>
             <mt-button type="primary" size="small">立即购买</mt-button>
-            <mt-button type="danger" size="small">加入购物车</mt-button>
+            <mt-button type="danger" size="small" @click="goShopCar">加入购物车</mt-button>
           </p>
         </div>
       </div>
     </div>
+
     <!-- 商品信息区域 -->
     <div class="mui-card">
       <div class="mui-card-header">商品参数</div>
@@ -56,7 +62,9 @@ export default {
     return {
       id: this.$route.params.id, // 将路由参数中的 id 挂载到 data,方便后期调试
       lunbotu: [],
-      goodsinfo: {}
+      goodsinfo: {},
+      ballFlag: false, // 控制小球隐藏和显示的标识符
+      selectedCount: 1
     };
   },
   created() {
@@ -89,6 +97,35 @@ export default {
     // 点击跳转到评论页面
     goComment(id) {
       this.$router.push({ name: "goodscomment", params: { id } });
+    },
+    // 添加到购物车
+    goShopCar() {
+      this.ballFlag = !this.ballFlag;
+    },
+    beforeEnter(el) {
+      el.style.transform = "translate(0, 0)";
+    },
+    enter(el, done) {
+      el.offsetWidth;
+      // 获取小球在页面中的位置
+      const ballPosition = this.$refs.ball.getBoundingClientRect();
+      // 获取徽标再页面中的位置
+      const bagePosition = document
+        .getElementById("badge")
+        .getBoundingClientRect();
+
+      const xDist = bagePosition.left - ballPosition.left;
+      const yDist = bagePosition.top - ballPosition.top;
+
+      el.style.transform = `translate(${xDist}px, ${yDist}px)`;
+      el.style.transition = "all 0.5s cubic-bezier(.4,-0.3,1,.68)";
+      done();
+    },
+    afterEnter(el) {
+      this.ballFlag = !this.ballFlag;
+    },
+    getSelectedCount(count) {
+      this.selectedCount = count;
     }
   },
   components: {
@@ -115,6 +152,17 @@ export default {
     button {
       margin: 15px 0;
     }
+  }
+
+  .ball {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: red;
+    position: absolute;
+    z-index: 99;
+    top: 408px;
+    left: 138px;
   }
 }
 </style>
