@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 顶部轮播区 -->
-    <swiper :lunbotuList="lunbotuList"></swiper>
+    <swiper :lunbotuList="lunbotuList" :isfull="true"></swiper>
 
     <!-- 九宫格部分 -->
     <ul class="mui-table-view mui-grid-view mui-grid-9">
