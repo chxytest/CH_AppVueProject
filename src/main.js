@@ -5,6 +5,42 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
+// 注册 vuex
+import Vuex from "vuex";
+Vue.use(Vuex);
+var store = new Vuex.Store({
+  state: {
+    car: [] // 将购物车中的商品的数据存储到数组中
+  },
+  mutations: {
+    addToCar(state, goodsinfo) {
+      var flag = false;
+
+      state.car.some(item => {
+        if (item.id == goodsinfo.id) {
+          item.count += parseInt(goodsinfo.count);
+          flag = true;
+          return true;
+        }
+      });
+
+      if (!flag) {
+        state.car.push(goodsinfo);
+      }
+    }
+  },
+  getters: {
+    // 相当于计算属性
+    getAllCount(state) {
+      var c = 0;
+      state.car.forEach(item => {
+        c += item.count;
+      });
+      return c;
+    }
+  }
+});
+
 // 导入获取时间插件
 import moment from "moment";
 // 定义全局过滤器，格式化时间
@@ -54,5 +90,6 @@ import app from "./App.vue";
 var vm = new Vue({
   el: "#app",
   render: c => c(app),
-  router // 挂载路由对象
+  router, // 挂载路由对象
+  store
 });
