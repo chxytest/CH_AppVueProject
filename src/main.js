@@ -5,12 +5,15 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
+// 每次刚进入网站，肯定会调用 main.js 在刚调用的时候，先从本地存储中，把购物车的数据读取出来放到 store 中
+var car = JSON.parse(localStorage.getItem("car") || "[]");
+
 // 注册 vuex
 import Vuex from "vuex";
 Vue.use(Vuex);
 var store = new Vuex.Store({
   state: {
-    car: [] // 将购物车中的商品的数据存储到数组中
+    car: car // 将购物车中的商品的数据存储到数组中
   },
   mutations: {
     addToCar(state, goodsinfo) {
@@ -24,9 +27,13 @@ var store = new Vuex.Store({
         }
       });
 
+      // 把商品数据直接 push 到购物车中
       if (!flag) {
         state.car.push(goodsinfo);
       }
+
+      // 把 car 数组，存储到本地 localStorage 中
+      localStorage.setItem("car", JSON.stringify(state.car));
     }
   },
   getters: {
