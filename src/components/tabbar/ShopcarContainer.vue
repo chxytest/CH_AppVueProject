@@ -2,17 +2,20 @@
   <div class="shopcar-container">
     <div class="goods-list">
       <!-- 商品列表区域 -->
-      <div class="mui-card" v-for="item in goodslist" :key="item.id">
+      <div class="mui-card" v-for="(item, i) in goodslist" :key="item.id">
         <div class="mui-card-content">
           <div class="mui-card-content-inner">
-            <mt-switch></mt-switch>
+            <mt-switch
+              v-model="$store.getters.getGoodsSelected[item.id]"
+              @change="selectedChanged(item.id, $store.getters.getGoodsSelected[item.id])"
+            ></mt-switch>
             <img :src="item.thumb_path" />
             <div class="info">
               <h3>{{ item.title }}</h3>
               <p>
                 <span class="price">￥ {{ item.sell_price }}</span>
-                <numbox :initcount="$store.getters.getGoodsCount[item.id]"></numbox>
-                <a href="#">删除</a>
+                <numbox :initcount="$store.getters.getGoodsCount[item.id]" :goodsid="item.id"></numbox>
+                <a href="#" @click.prevent="remove(item.id, i)">删除</a>
               </p>
             </div>
           </div>
@@ -21,9 +24,21 @@
       <!-- 商品结算区域 -->
       <div class="mui-card">
         <div class="mui-card-content">
-          <div class="mui-card-content-inner">这是一个最简单的卡片视图控件；</div>
+          <div class="mui-card-content-inner jiesuan">
+            <div class="left">
+              <p>总计</p>
+              <p>
+                已勾选商品
+                <span class="price-color">{{ $store.getters.getGoodsCountAndmount.count }}</span> 件，总价
+                <span class="price-color">￥{{ $store.getters.getGoodsCountAndmount.amount }}</span>
+              </p>
+            </div>
+            <mt-button type="danger">去结算</mt-button>
+          </div>
         </div>
       </div>
+
+      <p>{{ $store.getters.getGoodsSelected }}</p>
     </div>
   </div>
 </template>
@@ -57,6 +72,13 @@ export default {
             this.goodslist = result.body.message;
           }
         });
+    },
+    remove(id, index) {
+      this.goodslist.splice(index, 1);
+      this.$store.commit("removeFormCar", id);
+    },
+    selectedChanged(id, val) {
+      console.log(id + "---" + val);
     }
   },
   components: {
@@ -92,6 +114,16 @@ export default {
         color: red;
         font-weight: bold;
       }
+    }
+  }
+  .jiesuan {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .price-color {
+      color: red;
+      font-weight: bold;
+      font-size: 16px;
     }
   }
 }

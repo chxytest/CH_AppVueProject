@@ -20,12 +20,19 @@ import mui from "../../lib/mui/js/mui.min.js";
 export default {
   mounted() {
     // 初始化数字选择框
-    mui("mui-numbox").numbox();
+    mui(".mui-numbox").numbox();
   },
   methods: {
-    countChanged() {}
+    countChanged() {
+      // console.log(this.$refs.numbox.value);
+      // 当数量值改变时，则立即把最新的数量同步到购物车 store 中，覆盖之前的数量值
+      this.$store.commit("updataGoodsInfo", {
+        id: this.goodsid,
+        count: this.$refs.numbox.value
+      });
+    }
   },
-  props: ["initcount"]
+  props: ["initcount", "goodsid"]
 };
 </script>
 

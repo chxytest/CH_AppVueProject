@@ -1,7 +1,11 @@
 <template>
   <div class="app-container">
     <!-- 顶部 header 区域 -->
-    <mt-header fixed title="黑马程序员Vue项目"></mt-header>
+    <mt-header fixed title="黑马程序员Vue项目">
+      <span slot="left" @click="goback" v-show="flag">
+        <mt-button icon="back">返回</mt-button>
+      </span>
+    </mt-header>
 
     <!-- 中间 路由 router-view 显示区域 -->
     <transition>
@@ -34,6 +38,30 @@
 </template>
 
 <script>
+export default {
+  data() {
+    return {
+      flag: false
+    };
+  },
+  created() {
+    this.flag = this.$route.path === "/home" ? false : true;
+  },
+  methods: {
+    goback() {
+      this.$router.go(-1);
+    }
+  },
+  watch: {
+    "$route.path": function(newVal) {
+      if (newVal === "/home") {
+        this.flag = false;
+      } else {
+        this.flag = true;
+      }
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>
